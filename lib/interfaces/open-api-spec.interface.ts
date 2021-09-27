@@ -71,6 +71,8 @@ export interface PathItemObject {
   head?: OperationObject;
   patch?: OperationObject;
   trace?: OperationObject;
+  req?: OperationObject;
+  sub?: OperationObject;
   servers?: ServerObject[];
   parameters?: (ParameterObject | ReferenceObject)[];
 }

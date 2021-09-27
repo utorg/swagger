@@ -1,31 +1,68 @@
 import { RequestMethod, VersioningType } from '@nestjs/common';
-import { METHOD_METADATA, PATH_METADATA, VERSION_METADATA } from '@nestjs/common/constants';
-import { Controller, Type, VersioningOptions, VersionValue } from '@nestjs/common/interfaces';
-import { addLeadingSlash, isString, isUndefined } from '@nestjs/common/utils/shared.utils';
+import {
+  METHOD_METADATA,
+  PATH_METADATA,
+  VERSION_METADATA
+} from '@nestjs/common/constants';
+import {
+  Controller,
+  Type,
+  VersioningOptions,
+  VersionValue
+} from '@nestjs/common/interfaces';
+import {
+  addLeadingSlash,
+  isString,
+  isUndefined
+} from '@nestjs/common/utils/shared.utils';
 import { ApplicationConfig } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
 import { RoutePathFactory } from '@nestjs/core/router/route-path-factory';
-import { PATTERN_HANDLER_METADATA, PATTERN_METADATA } from '@nestjs/microservices/constants';
+import {
+  PATTERN_HANDLER_METADATA,
+  PATTERN_METADATA
+} from '@nestjs/microservices/constants';
 import { PatternHandler } from '@nestjs/microservices/enums/pattern-handler.enum';
-import { get, head, isArray, isEmpty, mapValues, omit, omitBy, pick } from 'lodash';
+import {
+  get,
+  head,
+  isArray,
+  isEmpty,
+  mapValues,
+  omit,
+  omitBy,
+  pick
+} from 'lodash';
 import * as pathToRegexp from 'path-to-regexp';
 import { DECORATORS } from './constants';
 import { exploreApiExcludeControllerMetadata } from './explorers/api-exclude-controller.explorer';
 import { exploreApiExcludeEndpointMetadata } from './explorers/api-exclude-endpoint.explorer';
 import {
   exploreApiExtraModelsMetadata,
-  exploreGlobalApiExtraModelsMetadata,
+  exploreGlobalApiExtraModelsMetadata
 } from './explorers/api-extra-models.explorer';
 import { exploreGlobalApiHeaderMetadata } from './explorers/api-headers.explorer';
 import { exploreApiOperationMetadata } from './explorers/api-operation.explorer';
 import { exploreApiParametersMetadata } from './explorers/api-parameters.explorer';
-import { exploreApiResponseMetadata, exploreGlobalApiResponseMetadata } from './explorers/api-response.explorer';
-import { exploreApiSecurityMetadata, exploreGlobalApiSecurityMetadata } from './explorers/api-security.explorer';
-import { exploreApiTagsMetadata, exploreGlobalApiTagsMetadata } from './explorers/api-use-tags.explorer';
+import {
+  exploreApiResponseMetadata,
+  exploreGlobalApiResponseMetadata
+} from './explorers/api-response.explorer';
+import {
+  exploreApiSecurityMetadata,
+  exploreGlobalApiSecurityMetadata
+} from './explorers/api-security.explorer';
+import {
+  exploreApiTagsMetadata,
+  exploreGlobalApiTagsMetadata
+} from './explorers/api-use-tags.explorer';
 import { DenormalizedDocResolvers } from './interfaces/denormalized-doc-resolvers.interface';
 import { DenormalizedDoc } from './interfaces/denormalized-doc.interface';
-import { OpenAPIObject, SchemaObject } from './interfaces/open-api-spec.interface';
+import {
+  OpenAPIObject,
+  SchemaObject
+} from './interfaces/open-api-spec.interface';
 import { MimetypeContentWrapper } from './services/mimetype-content-wrapper';
 import { SchemaObjectFactory } from './services/schema-object-factory';
 import { isBodyParameter } from './utils/is-body-parameter.util';
@@ -203,7 +240,7 @@ export class SwaggerExplorer {
       if (isUndefined(pattern)) {
         return undefined;
       }
-      methodPath = pattern
+      methodPath = pattern;
     }
 
     let requestMethod = Reflect.getMetadata(
@@ -220,7 +257,7 @@ export class SwaggerExplorer {
       if (isUndefined(patternHandler)) {
         return undefined;
       }
-      requestMethod = RequestMethod.ALL
+      requestMethod = RequestMethod.ALL;
     }
 
     const methodVersion: VersionValue | undefined = Reflect.getMetadata(
@@ -248,8 +285,16 @@ export class SwaggerExplorer {
 
     const apiExtension = Reflect.getMetadata(DECORATORS.API_EXTENSION, method);
     return {
-      method: isUndefined(patternHandler) ? RequestMethod[requestMethod].toLowerCase() : patternHandler === PatternHandler.EVENT ? 'sub' : 'req',
-      path: isUndefined(patternHandler) ? fullPath === '' ? '/' : fullPath : fullPath.replace(/^(.*\/)/, ''),
+      method: isUndefined(patternHandler)
+        ? RequestMethod[requestMethod].toLowerCase()
+        : patternHandler === PatternHandler.EVENT
+        ? 'sub'
+        : 'req',
+      path: isUndefined(patternHandler)
+        ? fullPath === ''
+          ? '/'
+          : fullPath
+        : fullPath.replace(/^(.*\/)/, ''),
       operationId: this.getOperationId(instance, method),
       ...apiExtension
     };

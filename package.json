@@ -1,6 +1,6 @@
 {
-  "name": "@zerohub/nestjs-swagger",
-  "version": "1.0.0",
+  "name": "@utorg/nestjs-swagger",
+  "version": "8.0.7",
   "description": "Nest - modern, fast, powerful node.js web framework (@swagger)",
   "author": "Kamil Mysliwiec, Sam Krew",
   "license": "MIT",
